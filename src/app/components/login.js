@@ -43,7 +43,7 @@ export class Login extends React.Component {
       ];
 
     if (this.state.logged !== false && this.state.logged !== 'init')
-      return <Redirect to='./' />;
+      return <Redirect to='./generador' />;
 
       return (
         <div class="valign-wrapper">
@@ -52,7 +52,7 @@ export class Login extends React.Component {
                     <form className="login-form">
                         <div className="row">
                             <br></br>
-                            <h5 className="center-align">Inicia sesión</h5>
+                            <h5 className="text center-align">Inicia sesión</h5>
                         </div>
                         <div className="row">
                             <div className="input-field col s12">
