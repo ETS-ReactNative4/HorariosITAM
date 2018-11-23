@@ -148,7 +148,7 @@ export class Calendar extends Component {
                     <Col s={12} style={{backgroundColor: "#fff"}}>
                         <Row></Row>
                         <Row>
-                            <div class="input-field col s4 offset-s4">
+                            <div class="input-field col s12 l4 offset-l4">
                                 <select multiple>
                                     <optgroup label="Plan de estudios 1">
                                         <option value="1">COM-F</option>

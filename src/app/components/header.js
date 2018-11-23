@@ -11,6 +11,10 @@ export class Header extends Component {
     }
   }
 
+  componentDidMount(){
+    window.$(".button-collapse").sideNav();
+  }
+
   componentWillReceiveProps(nextProps){
     this.setState({
       isLoggedIn: nextProps.isLoggedIn
