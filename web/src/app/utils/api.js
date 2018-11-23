@@ -4,6 +4,7 @@ var users_url = '/student';
 module.exports = {
     login: function(info){
         var url = users_url + '/login';
+        console.log(url)
         var encodedURI = window.encodeURI(url);
 
         return axios.post(encodedURI, {
