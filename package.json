@@ -1,34 +1,16 @@
 {
-  "name": "horariositam",
+  "name": "horariositam-express",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "express": "^4.16.4",
     "immutability-helper": "^2.8.1",
     "moment": "^2.22.2",
-    "pg-promise": "^8.5.2",
-    "react": "^16.6.0",
-    "react-big-calendar": "^0.20.1",
-    "react-dom": "^16.6.0",
-    "react-materialize": "^2.4.7",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.5"
+    "pg-promise": "^8.5.2"
   },
   "scripts": {
-    "start": "cd webservices && node app.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "npm install && npm run build"
-  },
-  "proxy": "http://localhost:5000",
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "heroku-postbuild": "cd web && npm install && npm run build"
+  }
 }
