@@ -15,11 +15,11 @@
     "react-scripts": "2.0.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cd webservices && node app.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "cd webservices && node app.js"
+    "heroku-postbuild": "npm install && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
