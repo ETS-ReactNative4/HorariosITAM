@@ -9,6 +9,8 @@ import {Root} from "./layout/root";
 import {Login} from './app/components/login';
 import {Calendar} from './app/components/calendar';
 
+var api = require('./app/utils/api')
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -66,37 +68,26 @@ class App extends Component {
     }
 
     apiLogin(){
-
-        this.setState({
-            isLoggedIn: 1,
-            inputValue: {
-              cu: '',
-              pw: ''
-            }
-          });
-          if(this.state.remember)
-            localStorage.setItem('cu', 1); 
-
-        /* var credentials = this.state.inputValue;
+        var credentials = this.state.inputValue;
         
-        api.leaderLogin(credentials)
+        api.login(credentials)
           .then((data) => {
             if(data){
               this.setState({
-                isLoggedIn: data.id_leader,
+                isLoggedIn: data.cu,
                 inputValue: {
                   cu: '',
                   pw: ''
                 }
               });
               if(this.state.remember)
-                localStorage.setItem('id_leader', data.id_leader); 
+                localStorage.setItem('cu', data.cu); 
             }      
             else
               this.setState({
                 isLoggedIn: false
               }); 
-          }) */
+          })
       }
 
     render() {

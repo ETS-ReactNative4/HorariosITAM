@@ -12,6 +12,33 @@ router.get('/ping', function (req, res){
   res.status(200).send('pong');
 });
 
+router.post('/login', function(req, res){
+  var cu = req.body.cu;
+  var pw = req.body.pw;
+
+
+  db.oneOrNone('SELECT CU FROM alumnos WHERE CU = $1 AND password = $2', [cu, pw])
+    .then(function (data) {
+      if(data!=null){
+        res.status(200);
+        console.log("BUENA");
+        res.json({CU: data.CU});
+      }
+      else{
+        res.status(400);
+        console.log("MALA");
+        res.json({});
+      }
+    //res.send('<h2>Todo en orden</h2>');
+    })
+    .catch(function (error) {
+      res.status(400);
+      console.log(error);
+      console.log("MALA");
+      res.send('<h2>Hubo un error</h2>');
+    })
+});
+
 router.get('/info', function(req, res){
   db.one('SELECT * FROM alumnos')
     .then(function (data) {
