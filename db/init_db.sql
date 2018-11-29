@@ -15,6 +15,12 @@ CREATE TABLE materia(
 COMMIT;
 
 BEGIN;
+CREATE TABLE cursado (
+    CU integer REFERENCES alumnos(CU),
+    id_Mat text REFERENCES materia(id_Mat)
+);
+
+BEGIN;
 CREATE TABLE planEstudios(
     id_Plan			text PRIMARY KEY,
     carrera                     text NOT NULL,
