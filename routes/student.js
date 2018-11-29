@@ -6,6 +6,7 @@ var pgp = require('pg-promise')({
 });
 
 var database_url = 'postgres://yjxmxmdcuhhkqm:3ace012f4774e98479d3ad0819355992a136834c24a8010feeed1f682fddb20a@ec2-54-83-8-246.compute-1.amazonaws.com:5432/db6fg3ucd43k2l';
+
 const db = pgp(database_url);
 
 router.get('/ping', function (req, res){
@@ -22,7 +23,7 @@ router.post('/login', function(req, res){
       if(data!=null){
         res.status(200);
         console.log("BUENA");
-        res.json({CU: data.CU});
+        res.json(data);
       }
       else{
         res.status(400);
