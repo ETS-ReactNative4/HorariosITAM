@@ -55,7 +55,17 @@ router.get('/info', function(req, res){
 });
 
 router.post('/no_cursadas', function(req, res){
-  res.status(200).send('pong');
+  db.many('SELECT * FROM alumnos')
+    .then(function (data) {
+      res.status(200);
+      console.log("BUENA");
+      res.json(data);
+    })
+    .catch(function (error) {
+      res.status(400);
+      console.log(error);
+      console.log("MALA");
+    })
 });
 
 module.exports = router
