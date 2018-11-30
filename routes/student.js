@@ -42,6 +42,7 @@ router.post('/login', function(req, res){
 
 router.post('/no', function(req, res){
   var cu = req.body.cu;
+  console.log("post received: %s %s", username, password);
 
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
@@ -78,5 +79,9 @@ router.get('/info', function(req, res){
     })
 });
 
+
+router.get('/ping2', (req, res) => {
+  res.status(200).send('éste sí jala');
+})
 
 module.exports = router
