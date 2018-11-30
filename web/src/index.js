@@ -68,26 +68,37 @@ class App extends Component {
     }
 
     apiLogin(){
-        var credentials = this.state.inputValue;
-        console.log(credentials)
-        api.login(credentials)
-          .then((data) => {
-            if(data){
-              this.setState({
-                isLoggedIn: data.cu,
-                inputValue: {
-                  cu: '',
-                  pw: ''
-                }
-              });
-              if(this.state.remember)
-                localStorage.setItem('cu', data.cu); 
-            }      
-            else
-              this.setState({
-                isLoggedIn: false
-              }); 
-          })
+      this.setState({
+        isLoggedIn: 1,
+        inputValue: {
+          cu: '',
+          pw: ''
+        }
+      });
+      if(this.state.remember)
+        localStorage.setItem('cu', 1); 
+
+
+        // var credentials = this.state.inputValue;
+        // console.log(credentials)
+        // api.login(credentials)
+        //   .then((data) => {
+        //     if(data){
+        //       this.setState({
+        //         isLoggedIn: data.cu,
+        //         inputValue: {
+        //           cu: '',
+        //           pw: ''
+        //         }
+        //       });
+        //       if(this.state.remember)
+        //         localStorage.setItem('cu', data.cu); 
+        //     }      
+        //     else
+        //       this.setState({
+        //         isLoggedIn: false
+        //       }); 
+        //   })
       }
 
     render() {
