@@ -78,31 +78,4 @@ router.post('/no_cursadas', function(req, res){
 
 });
 
-// router.post('/llevables', function(req, res){
-//   var cu = req.body.cu;
-
-//   db.task(t => {
-//     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=1 AND materia.id_Mat=cursado.id_Mat', cu)
-//       .then(data => {
-//         return t.many('SELECT materia.id_Mat FROM planEstudios, materia WHERE materia.id_Mat=planEstudios.id_Mat AND materia.id_Mat NOT IN ($1:csv) ORDER BY ponderacion DESC', data)
-//       })
-//       .then(data => {
-//         return t.many('SELECT materia.id_Mat')
-//       });
-//   })
-//   .then(data => {
-//     res.status(200);
-//     console.log("BUENA");
-//     res.json(data);
-//   })
-//   .catch(error => {
-//     res.status(400);
-//     console.log("MALA");
-//     console.log(error);
-//   });
-
-
-
-// });
-
 module.exports = router
