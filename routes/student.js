@@ -40,7 +40,7 @@ router.post('/login', function(req, res){
     })
 });
 
-router.post('/no_cursadas', function(req, res){
+router.post('/no', function(req, res){
   var cu = req.body.cu;
 
   db.task(t => {
