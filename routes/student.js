@@ -54,8 +54,8 @@ router.get('/info', function(req, res){
     })
 });
 
-router.get('/llevables', function(req, res){
-  var cu = req.query.cu;
+router.post('/no_cursadas', function(req, res){
+  var cu = req.body.cu;
 
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=1 AND materia.id_Mat=cursado.id_Mat', cu)
