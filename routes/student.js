@@ -6,7 +6,6 @@ var pgp = require('pg-promise')({
 });
 
 var database_url = 'postgres://yjxmxmdcuhhkqm:3ace012f4774e98479d3ad0819355992a136834c24a8010feeed1f682fddb20a@ec2-54-83-8-246.compute-1.amazonaws.com:5432/db6fg3ucd43k2l';
-
 const db = pgp(database_url);
 
 router.get('/ping', function (req, res){
@@ -41,7 +40,7 @@ router.post('/login', function(req, res){
 });
 
 router.get('/info', function(req, res){
-  db.one('SELECT * FROM alumnos')
+  db.many('SELECT * FROM alumnos')
     .then(function (data) {
       res.status(200);
       console.log("BUENA");
@@ -52,6 +51,32 @@ router.get('/info', function(req, res){
       console.log(error);
       console.log("MALA");
     })
+});
+
+router.post('/llevables', function(req, res){
+  var cu = req.body.cu;
+
+  db.task(t => {
+    return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=1 AND materia.id_Mat=cursado.id_Mat', cu)
+      .then(data => {
+        return t.many('SELECT materia.id_Mat FROM planEstudios, materia WHERE materia.id_Mat=planEstudios.id_Mat AND materia.id_Mat NOT IN ($1:csv)', data)
+      })
+      .then(data => {
+        return t.none('INSERT INTO registries(id_leader, id_course, date) VALUES($1, $2, $3)', [data.id_leader, id_course, date]);
+      });
+  })
+  .then(data => {
+    res.status(200);
+    console.log("BUENA");
+    res.json(data);
+  })
+  .catch(error => {
+    res.status(400);
+    console.log("MALA");
+    console.log(error);
+  });
+
+
 });
 
 module.exports = router
