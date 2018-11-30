@@ -47,7 +47,7 @@ router.post('/no', function(req, res){
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
       .then(data => {
-        return t.many('SELECT materia.id_Mat FROM planEstudios, materia WHERE materia.id_Mat=planEstudios.id_Mat AND materia.id_Mat NOT IN ($1:csv)', data)
+        return t.many('SELECT TOP 6 materia.id_Mat, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=planEstudios.id_Mat AND materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC', data)
       })
   })
   .then(data => {
