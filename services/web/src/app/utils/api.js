@@ -1,5 +1,5 @@
 var axios = require('axios');
-var users_url = '/student';
+var users_url = process.env.REACT_APP_USERS_SERVICE_URL;
 
 module.exports = {
     login: function(info){
