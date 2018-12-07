@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+
+  adminer:
+    container_name: adminer
+    image: adminer:4.3.1
+    restart: always
+    ports:
+      - 8089:8080
+
+  db:
+    container_name: db
+    build: ./services/db
+    restart: always
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_DB=incol
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.incol_data:/var/lib/postgresql/data
+    healthcheck:
+       test: exit 0
+
+  web_services:
+    container_name: web_services
+    build: ./services/web_services
+    restart: always
+    ports:
+      - 3001:3001
+    environment:
+      - USERS_PORT=3001
+      - DB_URL=postgres://postgres:postgres@db:5432/incol
+    volumes:
+      - ./services/web_services:/web_services
+    links:
+      - db
+
+  web: 
+    container_name: web 
+    build: ./services/web 
+    restart: always 
+    ports: 
+      - 3000:3000 
+    environment: 
+      - REACT_APP_USERS_SERVICE_URL=http://localhost:3001/student 
+    volumes: 
+      - ./services/web:/web 
+    links: 
+      - web_services 
