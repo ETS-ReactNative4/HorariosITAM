@@ -42,6 +42,7 @@ router.post('/login', function(req, res){
 
 router.post('/no', function(req, res){
   var cu = req.body.cu;
+  var materias = req.body.materias;
 
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
@@ -52,7 +53,7 @@ router.post('/no', function(req, res){
           data_arr.push(data[i].id_mat);
         } 
         console.log(data_arr)
-        return t.many('SELECT materia.id_Mat, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit 6', [data_arr])
+        return t.many('SELECT materia.id_Mat, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit $2', [data_arr, materias])
       })
   })
   .then(data => {
