@@ -5,8 +5,8 @@ var pgp = require('pg-promise')({
   capSQL: true // capitalize all generated SQL
 });
 
-var database_url = 'postgres://yjxmxmdcuhhkqm:3ace012f4774e98479d3ad0819355992a136834c24a8010feeed1f682fddb20a@ec2-54-83-8-246.compute-1.amazonaws.com:5432/db6fg3ucd43k2l';
-//var database_url = 'postgres://postgres:postgres@localhost:5432/incol';
+
+var database_url= process.env.DB_URL || 'postgres://postgres:postgres@localhost:5432/incol';
 const db = pgp(database_url);
 
 router.get('/ping', function (req, res){
@@ -42,12 +42,17 @@ router.post('/login', function(req, res){
 
 router.post('/no', function(req, res){
   var cu = req.body.cu;
-  console.log("post received: %s %s", username, password);
 
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
       .then(data => {
-        return t.many('SELECT TOP 6 materia.id_Mat, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=planEstudios.id_Mat AND materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC', data)
+        console.log(data);
+        var data_arr = Array();
+        for(var i = 0; i<data.length; i++){
+          data_arr.push(data[i].id_mat);
+        } 
+        console.log(data_arr)
+        return t.many('SELECT materia.id_Mat, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit 6', [data_arr])
       })
   })
   .then(data => {
