@@ -40,7 +40,7 @@ router.post('/login', function(req, res){
     })
 });
 
-router.post('/no', function(req, res){
+router.post('/no_cursadas', function(req, res){
   var cu = req.body.cu;
   var materias = req.body.materias;
 
@@ -53,7 +53,7 @@ router.post('/no', function(req, res){
           data_arr.push(data[i].id_mat);
         } 
         console.log(data_arr)
-        return t.many('SELECT materia.id_Mat, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit $2', [data_arr, materias])
+        return t.any('SELECT materia.name, materia.id_Mat, prereq, optativa, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit $2', [data_arr, materias])
       })
   })
   .then(data => {
@@ -66,10 +66,43 @@ router.post('/no', function(req, res){
     console.log("MALA");
     console.log(error);
   });
-
-
-
 });
+
+router.post('/grupos_abiertos', function(req, res){
+  var cu = req.body.cu;
+  var materias = req.body.materias;
+
+  db.task(t => {
+    return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
+      .then(data => {
+        console.log(data);
+        var data_arr = Array();
+        for(var i = 0; i<data.length; i++){
+          data_arr.push(data[i].id_mat);
+        } 
+        console.log(data_arr)
+        return t.any('SELECT materia.id_Mat FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit $2', [data_arr, materias])
+          .then(data => {
+            var data_ab = Array();
+            for(var i = 0; i<data.length; i++){
+              data_ab.push(data[i].id_mat);
+            } 
+            return t.any('SELECT * FROM grupo, materia, contiene WHERE materia.id_Mat=contiene.id_Mat AND grupo.id_Mat=contiene.id_Mat AND grupo.id_Mat IN ($1:csv)', [data_ab])
+          })
+      })
+  })
+  .then(data => {
+    res.status(200);
+    console.log("BUENA");
+    res.json(data);
+  })
+  .catch(error => {
+    res.status(400);
+    console.log("MALA");
+    console.log(error);
+  });
+});
+
 
 router.get('/info', function(req, res){
   db.many('SELECT * FROM alumnos')
