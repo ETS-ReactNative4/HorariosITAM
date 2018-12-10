@@ -47,13 +47,31 @@ router.post('/no_cursadas', function(req, res){
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
       .then(data => {
-        console.log(data);
         var data_arr = Array();
+        
         for(var i = 0; i<data.length; i++){
-          data_arr.push(data[i].id_mat);
-        } 
-        console.log(data_arr)
-        return t.any('SELECT materia.name, materia.id_Mat, prereq, optativa, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit $2', [data_arr, materias])
+          data_arr.push(data[i].id_mat); 
+        }
+        return t.any('SELECT materia.name, materia.id_Mat, prereq, optativa, contiene.ponderacion FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC', [data_arr])
+        .then(data => {
+          var data_prereq = Array();
+          var data_final = Array();
+          for(var i = 0; i<data.length; i++){
+            if(data[i].prereq === null)
+              data_prereq.push(true);
+            else
+              data_prereq.push(data[i].prereq.every(val => data_arr.includes(val)));
+          }
+          for(var i = 0; i<data_prereq.length; i++){
+            if(data_prereq[i] === true && data_final.length<materias){
+              data_final.push({
+                id_mat: data[i].id_mat,
+                name: data[i].name
+              });
+            }
+          }
+          return data_final;
+        })
       })
   })
   .then(data => {
@@ -75,19 +93,28 @@ router.post('/grupos_abiertos', function(req, res){
   db.task(t => {
     return t.any('SELECT materia.id_Mat FROM materia, cursado WHERE cursado.CU=$1 AND materia.id_Mat=cursado.id_Mat', cu)
       .then(data => {
-        console.log(data);
         var data_arr = Array();
         for(var i = 0; i<data.length; i++){
           data_arr.push(data[i].id_mat);
         } 
-        console.log(data_arr)
-        return t.any('SELECT materia.id_Mat FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC limit $2', [data_arr, materias])
+        return t.any('SELECT materia.id_Mat, prereq FROM planEstudios, materia, contiene  WHERE materia.id_Mat=contiene.id_Mat AND planEstudios.id_Plan=contiene.id_Plan AND materia.id_Mat NOT IN ($1:csv) ORDER BY contiene.ponderacion DESC', [data_arr])
           .then(data => {
-            var data_ab = Array();
+            var data_prereq = Array();
+            var data_final = Array();
             for(var i = 0; i<data.length; i++){
-              data_ab.push(data[i].id_mat);
-            } 
-            return t.any('SELECT * FROM grupo, materia, contiene WHERE materia.id_Mat=contiene.id_Mat AND grupo.id_Mat=contiene.id_Mat AND grupo.id_Mat IN ($1:csv)', [data_ab])
+              if(data[i].prereq === null)
+                data_prereq.push(true);
+              else
+                data_prereq.push(data[i].prereq.every(val => data_arr.includes(val)));
+            }
+            for(var i = 0; i<data_prereq.length; i++){
+              if(data_prereq[i] === true && data_final.length<materias){
+                data_final.push(data[i].id_mat);
+              }
+            }
+            console.log("final");
+            console.log(data_final)
+            return t.any('SELECT * FROM grupo, materia, contiene WHERE materia.id_Mat=contiene.id_Mat AND grupo.id_Mat=contiene.id_Mat AND grupo.id_Mat IN ($1:csv) ORDER BY ponderacion DESC, cast(id_grupo as int) ASC', [data_final])
           })
       })
   })
