@@ -5,12 +5,12 @@ var api = require('../utils/api')
 
 function Grupos(props){
   var grupos = props.inputValue.map((value, i) => ( 
-    <Row>
+    <Row key={"g" + i}>
       <Col s={12} l={4} offset={"l4"}>
         <div className="card-panel light-green lighten-5 z-depth-2">
           <div className="row valign-wrapper">
             <div className="col s12" style={{wordWrap: "normal"}}>
-              <span className="brown-text text-darken-4 head-card">{props.inputValue[i].name}</span>
+              <span className="brown-text text-darken-4 head-card truncate">{props.inputValue[i].name}</span>
               <ul>
                 <li className="brown-text text-darken-4">               
                   <span className="slim-text">Profesor:</span> <b>{props.inputValue[i].profesor}</b>          
@@ -41,7 +41,7 @@ function Grupos(props){
 
 function Materia(props){
    var materia = props.inputValue.map((value, i) => ( 
-    <li>
+    <li key={"m" + i}>
       <div className="collapsible-header collapse-color" onClick={() => props.open(i)}><i className="material-icons">class</i>{props.inputValue[i].name}</div>
       <Grupos inputValue={props.grupos[i]}/>
     </li>
@@ -61,8 +61,8 @@ export class Horarios extends Component {
       this.state = {
         isLoggedIn: 'init',
         cant_materias: 0,
-        cursables: Array(),
-        grupos: Array()
+        cursables: [],
+        grupos: []
       }
     }
 
@@ -118,14 +118,14 @@ export class Horarios extends Component {
           var v = 0;
           var grup = this.state.grupos.slice();
           for(u = 0; u < this.state.cursables.length; u++){
-            obj[u] = Array();
+            obj[u] = [];
             while(v<grup.length && this.state.cursables[u].name===this.state.grupos[v].name){
               obj[u].push(grup[v])
               v++;
             }
           }
-          mat = [<h5>Te recomendamos cursar:</h5>,
-            <Materia inputValue={this.state.cursables} grupos={obj} open={(i) => {this.open(i)}}/>];          
+          mat = [<h5 key="h5">Te recomendamos cursar:</h5>,
+            <Materia key="mater" inputValue={this.state.cursables} grupos={obj} open={(i) => {this.open(i)}}/>];          
         }          
           
 

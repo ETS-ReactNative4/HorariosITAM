@@ -94,16 +94,16 @@ class App extends Component {
         var logged = '';
         if(this.state.isLoggedIn !== false && this.state.isLoggedIn !== 'init'){
             logged = [
-                <Route exact path="/" render={() => <Horarios isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>,
-                <Route path="/generador" render={() => <Horarios isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>
+                <Route key="genLogD" exact path="/" render={() => <Horarios isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>,
+                <Route key="genLog" path="/generador" render={() => <Horarios isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>
             ];
         }
         
         
         else if(this.state.isLoggedIn === false || this.state.isLoggedIn === 'init'){
             logged = [
-                <Route exact path="/" render={() => <Login isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>,
-                <Route path="/login" render={() => <Login isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>
+                <Route key="logD" exact path="/" render={() => <Login isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>,
+                <Route key="log" path="/login" render={() => <Login isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>
             ];
         }
 

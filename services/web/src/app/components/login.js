@@ -32,14 +32,14 @@ export class Login extends React.Component {
       var error_pw = 'Usuario y/o contraseña incorrecta';
 
       input = [
-        <Input l={12} s={12} error={error_cu} type='number' id='cu' label='Clave única' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'cu')}}/>,
-        <Input l={12} s={12} error={error_pw} type='password' id='password' label='Contraseña' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'pw')}}/>
+        <Input key="l1err" l={12} s={12} active="active" error={error_cu} type='number' id='cu' label='Clave única' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'cu')}}/>,
+        <Input key="l2err" l={12} s={12} active="active" error={error_pw} type='password' id='password' label='Contraseña' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'pw')}}/>
       ];
     }
     else
       input = [
-        <Input l={12} s={12} type='number' id='cu' label='Clave única' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'cu')}}/>,
-        <Input l={12} s={12} type='password' id='password' label='Contraseña' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'pw')}}/>
+        <Input key="l1" l={12} s={12} type='number' id='cu' label='Clave única' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'cu')}}/>,
+        <Input key="l2" l={12} s={12} type='password' id='password' label='Contraseña' onKeyPress={this.handleKeyPress.bind(this)} onChange={(e) => {this.props.handleInputChange(e.target.value, 'pw')}}/>
       ];
 
     if (this.state.logged !== false && this.state.logged !== 'init')

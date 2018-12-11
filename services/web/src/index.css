@@ -41,6 +41,11 @@ span.head-card{
   font-weight: 300;
 }
 
+span.head-quest{
+  font-size: 1.3rem;
+  font-weight: 300;
+}
+
 .slim-text{
   font-weight: 300;
 }
@@ -101,6 +106,10 @@ div.input-field .prefix.active {
 .collapse-color{
     color: #798C46;
     font-weight: bold;
+}
+
+.greenCol-text{
+  color: #798C46;
 }
 
 input.green-check:checked + label:before{
