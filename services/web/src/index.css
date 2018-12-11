@@ -36,6 +36,11 @@ nav .brand-logo, nav ul li a{
   padding-top: 8vh;
 }
 
+#page {
+  width: 85vw;
+  padding-top: 8vh;
+}
+
 button.green-btn, a.green-btn {
   background-color:  #798C46;
   color: #EFF0D1;
@@ -78,6 +83,15 @@ input.invalid:not([type]), input.invalid:not([type]):focus, input[type="text"].i
 
 div.input-field .prefix.active {
   color: #798C46;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+  color: #798C46;
+}
+
+.collapse-color{
+    color: #798C46;
+    font-weight: bold;
 }
 
 input.green-check:checked + label:before{

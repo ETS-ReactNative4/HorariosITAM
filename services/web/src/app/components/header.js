@@ -57,20 +57,23 @@ export class Header extends Component {
     }
       
     return (
-      <div className="navbar-fixed">
-        <nav id="incol-nav">
-          <div className="nav-wrapper">
-            <div className="container">
-                <a href="./" className="brand-logo">
-                  <img id="logo" alt="logo" className="center" src={logo}/>     
-                </a> 
-                <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
-                {logged}
-                {loggedMob}
-              </div>   
-          </div>
-        </nav>
-      </div>
+      <div>
+        <div className="navbar-fixed">
+          <nav id="incol-nav">
+            <div className="nav-wrapper">
+              <div className="container">
+                  <a href="./" className="brand-logo">
+                    <img id="logo" alt="logo" className="center" src={logo}/>     
+                  </a> 
+                  <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
+                  {logged}
+                  
+                </div>   
+            </div>
+          </nav>
+        </div>
+        {loggedMob}
+      </div>   
     );
   }
 }

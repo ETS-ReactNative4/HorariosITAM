@@ -26,7 +26,7 @@ class App extends Component {
     }
   
     componentDidMount() {
-      this.session();
+      this.session();     
     }
   
     handleInputChange(e, val){

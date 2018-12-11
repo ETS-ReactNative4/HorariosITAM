@@ -4,7 +4,6 @@ import { Row, Col, Input } from 'react-materialize';
 var api = require('../utils/api')
 
 function Grupos(props){
-  var j = 0;
   var grupos = props.inputValue.map((value, i) => ( 
     <Row>
       <Col s={12} l={12}>
@@ -15,7 +14,7 @@ function Grupos(props){
   ));
 
   return (
-    <div class="collapsible-body">
+    <div className="collapsible-body">
       {grupos}
     </div>
   );
@@ -24,13 +23,13 @@ function Grupos(props){
 function Materia(props){
    var materia = props.inputValue.map((value, i) => ( 
     <li>
-      <div class="collapsible-header"><i class="material-icons">class</i>{props.inputValue[i].name}</div>
+      <div className="collapsible-header collapse-color" onClick={() => props.open(i)}><i className="material-icons">class</i>{props.inputValue[i].name}</div>
       <Grupos inputValue={props.grupos[i]}/>
     </li>
   ));
 
   return (
-    <ul class="collapsible" data-collapsible="accordion">
+    <ul className="collapsible" data-collapsible="accordion">
       {materia}
     </ul>
   );
@@ -50,16 +49,20 @@ export class Horarios extends Component {
 
     componentDidMount(){
         window.$(document).ready(function() {
-            window.$('select').material_select();
-            window.$('.collapsible').collapsible();
+          window.$('select').material_select();         
         });
     }
+
+    open(i){
+      console.log("click", i)
+      window.$('.collapsible').collapsible('open', i);
+    }
+
 
     handleInputChange(e) {      
       this.setState({
         cant_materias: e.target.value
       }, () => {
-        window.$('.collapsible').collapsible();
         var cu = this.props.isLoggedIn;
         var materias = this.state.cant_materias;
 
@@ -92,46 +95,46 @@ export class Horarios extends Component {
         var u;
         
         var obj = {}
-
-
         if(this.state.cant_materias!==0 && this.state.grupos.length>0 && this.state.cursables.length>0){
           var v = 0;
           var grup = this.state.grupos.slice();
-          console.log("length: ", grup.length)
           for(u = 0; u < this.state.cursables.length; u++){
             obj[u] = Array();
             while(v<grup.length && this.state.cursables[u].name===this.state.grupos[v].name){
-              console.log(v)
               obj[u].push(grup[v])
               v++;
             }
           }
-          mat = <Materia inputValue={this.state.cursables} grupos={obj}/>
+          mat = <Materia inputValue={this.state.cursables} grupos={obj} open={(i) => {this.open(i)}}/>;          
         }          
           
 
         return(
-            <div className="container">
+          <div className="valign-wrapper">
+          <div id="page" className="row">
+              <div className="col s12 z-depth-6 card-panel">
                 <Row>
-                    <Col s={12} style={{backgroundColor: "#fff"}}>
+                    <Col s={12}>
                         <Row></Row>
                         <Row>
-                          <Input s={12} type='select' label="¿Cuántas materias cursarás este semestre?" onChange = {(e) => this.handleInputChange(e)}>
-                            <option key='nada' value="nada">Seleccione un grado académico</option>
-                            <option key={1} value={1}>1</option>
-                            <option key={2} value={2}>2</option>
-                            <option key={3} value={3}>3</option>
-                            <option key={4} value={4}>4</option>
-                            <option key={5} value={5}>5</option>
-                            <option key={6} value={6}>6</option>
-                            <option key={7} value={7}>7</option>
-                            <option key={8} value={8}>8</option>
-                          </Input>
+                          <Col s={12} l={4} offset={'l4'}>
+                            <Input s={12} type='select' label="¿Cuántas materias cursarás?" onChange = {(e) => this.handleInputChange(e)}>
+                              <option className="opt-color" key='nada' value="nada">Seleccione una cantidad de materias</option>
+                              <option className="opt-color" key={1} value={1}>1</option>
+                              <option className="opt-color" key={2} value={2}>2</option>
+                              <option className="opt-color" key={3} value={3}>3</option>
+                              <option className="opt-color" key={4} value={4}>4</option>
+                              <option className="opt-color" key={5} value={5}>5</option>
+                              <option className="opt-color" key={6} value={6}>6</option>
+                              <option className="opt-color" key={7} value={7}>7</option>
+                              <option className="opt-color" key={8} value={8}>8</option>
+                            </Input>
+                          </Col>
                         </Row>
                         {mat}
                     </Col>
                 </Row>
-            </div>
+            </div></div></div>
         );
     }
 }
