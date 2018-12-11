@@ -81,19 +81,19 @@ export class Header extends Component {
             </p>
             <ul>
               <li>
-                − Tus materias cursadas
+                — Tus materias cursadas
               </li>
               <li>
-                − Los prerequisitos de una materia
+                — Los prerequisitos de una materia
               </li>
               <li>
-                − Las materias que se abren en el semestre
+                — Las materias que se abren en el semestre
               </li>
               <li>
-                − Tu plan de estudios
+                — Tu plan de estudios
               </li>
               <li>
-                − Cuántas materias te abre alguna de éstas
+                — Cuántas materias te abre alguna de éstas
               </li>
             </ul>
             <p style={{textAlign:"justify"}}>
