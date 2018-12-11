@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 
 import {Root} from "./layout/root";
 import {Login} from './app/components/login';
-import {Calendar} from './app/components/calendar';
+import {Horarios} from './app/components/calendar';
 
 var api = require('./app/utils/api')
 
@@ -94,8 +94,8 @@ class App extends Component {
         var logged = '';
         if(this.state.isLoggedIn !== false && this.state.isLoggedIn !== 'init'){
             logged = [
-                <Route exact path="/" render={() => <Calendar isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>,
-                <Route path="/generador" render={() => <Calendar isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>
+                <Route exact path="/" render={() => <Horarios isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>,
+                <Route path="/generador" render={() => <Horarios isLoggedIn={this.state.isLoggedIn} handleInputChange={(e, val) => {this.handleInputChange(e, val)}} apiLogin={this.apiLogin.bind(this)}/>}/>
             ];
         }
         

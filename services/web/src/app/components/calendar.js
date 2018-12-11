@@ -1,168 +1,134 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'react-materialize';
-import  { Redirect } from 'react-router-dom';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
+import { Row, Col, Input } from 'react-materialize';
 
-function MyCalendar(props) {
-    const localizer = BigCalendar.momentLocalizer(moment)
-    const myEventsList = [
-        {
-          id: 0,
-          title: 'All Day Event very long title',
-          allDay: true,
-          start: new Date(2015, 3, 0),
-          end: new Date(2015, 3, 1),
-        },
-        {
-          id: 1,
-          title: 'Long Event',
-          start: new Date(2015, 3, 7),
-          end: new Date(2015, 3, 10),
-        },
-      
-        {
-          id: 2,
-          title: 'DTS STARTS',
-          start: new Date(2016, 2, 13, 0, 0, 0),
-          end: new Date(2016, 2, 20, 0, 0, 0),
-        },
-      
-        {
-          id: 3,
-          title: 'DTS ENDS',
-          start: new Date(2016, 10, 6, 0, 0, 0),
-          end: new Date(2016, 10, 13, 0, 0, 0),
-        },
-      
-        {
-          id: 4,
-          title: 'Some Event',
-          start: new Date(2015, 3, 9, 0, 0, 0),
-          end: new Date(2015, 3, 10, 0, 0, 0),
-        },
-        {
-          id: 5,
-          title: 'Conference',
-          start: new Date(2015, 3, 11),
-          end: new Date(2015, 3, 13),
-          desc: 'Big conference for important people',
-        },
-        {
-          id: 6,
-          title: 'Meeting',
-          start: new Date(2015, 3, 12, 10, 30, 0, 0),
-          end: new Date(2015, 3, 12, 12, 30, 0, 0),
-          desc: 'Pre-meeting meeting, to prepare for the meeting',
-        },
-        {
-          id: 7,
-          title: 'Lunch',
-          start: new Date(2015, 3, 12, 12, 0, 0, 0),
-          end: new Date(2015, 3, 12, 13, 0, 0, 0),
-          desc: 'Power lunch',
-        },
-        {
-          id: 8,
-          title: 'Meeting',
-          start: new Date(2015, 3, 12, 14, 0, 0, 0),
-          end: new Date(2015, 3, 12, 15, 0, 0, 0),
-        },
-        {
-          id: 9,
-          title: 'Happy Hour',
-          start: new Date(2015, 3, 12, 17, 0, 0, 0),
-          end: new Date(2015, 3, 12, 17, 30, 0, 0),
-          desc: 'Most important meal of the day',
-        },
-        {
-          id: 10,
-          title: 'Dinner',
-          start: new Date(2015, 3, 12, 20, 0, 0, 0),
-          end: new Date(2015, 3, 12, 21, 0, 0, 0),
-        },
-        {
-          id: 11,
-          title: 'Birthday Party',
-          start: new Date(2015, 3, 13, 7, 0, 0),
-          end: new Date(2015, 3, 13, 10, 30, 0),
-        },
-        {
-          id: 12,
-          title: 'Late Night Event',
-          start: new Date(2015, 3, 17, 19, 30, 0),
-          end: new Date(2015, 3, 18, 2, 0, 0),
-        },
-        {
-          id: 12.5,
-          title: 'Late Same Night Event',
-          start: new Date(2015, 3, 17, 19, 30, 0),
-          end: new Date(2015, 3, 17, 23, 30, 0),
-        },
-        {
-          id: 13,
-          title: 'Multi-day Event',
-          start: new Date(2015, 3, 20, 19, 30, 0),
-          end: new Date(2015, 3, 22, 2, 0, 0),
-        },
-        {
-          id: 14,
-          title: 'Today',
-          start: new Date(new Date().setHours(new Date().getHours() - 3)),
-          end: new Date(new Date().setHours(new Date().getHours() + 3)),
-        },
-      ];
+var api = require('../utils/api')
 
-    return(
-        <div>
-            <BigCalendar
-                defaultView="week"
-                localizer={localizer}
-                events={myEventsList}
-                startAccessor="start"
-                endAccessor="end"
-            />
-        </div>
-    );
+function Grupos(props){
+  var j = 0;
+  var grupos = props.inputValue.map((value, i) => ( 
+    <Row>
+      <Col s={12} l={12}>
+          {props.inputValue[i].name} <br/>  
+          {props.inputValue[i].id_mat}-0{props.inputValue[i].id_grupo}    
+        </Col>
+    </Row>   
+  ));
+
+  return (
+    <div class="collapsible-body">
+      {grupos}
+    </div>
+  );
 }
 
-export class Calendar extends Component {
+function Materia(props){
+   var materia = props.inputValue.map((value, i) => ( 
+    <li>
+      <div class="collapsible-header"><i class="material-icons">class</i>{props.inputValue[i].name}</div>
+      <Grupos inputValue={props.grupos[i]}/>
+    </li>
+  ));
+
+  return (
+    <ul class="collapsible" data-collapsible="accordion">
+      {materia}
+    </ul>
+  );
+}
+
+export class Horarios extends Component {
     constructor(props) {
       super(props);
   
       this.state = {
         isLoggedIn: 'init',
+        cant_materias: 0,
+        cursables: Array(),
+        grupos: Array()
       }
     }
 
     componentDidMount(){
         window.$(document).ready(function() {
             window.$('select').material_select();
+            window.$('.collapsible').collapsible();
         });
     }
 
+    handleInputChange(e) {      
+      this.setState({
+        cant_materias: e.target.value
+      }, () => {
+        window.$('.collapsible').collapsible();
+        var cu = this.props.isLoggedIn;
+        var materias = this.state.cant_materias;
+
+        var info = {
+           cu: cu,
+           materias: materias
+        }
+
+        api.cursables(info)
+          .then((data) => {
+            this.setState({
+              cursables: data
+            });
+          })
+          .then(() => {
+            api.grupos_abiertos(info)
+            .then((data) => {
+              this.setState({
+                grupos: data
+              });
+            });
+          });
+
+          
+      });       
+    }
+
     render(){
+        var mat;
+        var u;
+        
+        var obj = {}
+
+
+        if(this.state.cant_materias!==0 && this.state.grupos.length>0 && this.state.cursables.length>0){
+          var v = 0;
+          var grup = this.state.grupos.slice();
+          console.log("length: ", grup.length)
+          for(u = 0; u < this.state.cursables.length; u++){
+            obj[u] = Array();
+            while(v<grup.length && this.state.cursables[u].name===this.state.grupos[v].name){
+              console.log(v)
+              obj[u].push(grup[v])
+              v++;
+            }
+          }
+          mat = <Materia inputValue={this.state.cursables} grupos={obj}/>
+        }          
+          
+
         return(
             <div className="container">
                 <Row>
                     <Col s={12} style={{backgroundColor: "#fff"}}>
                         <Row></Row>
                         <Row>
-                            <div class="input-field col s12 l4 offset-l4">
-                                <select multiple>
-                                    <optgroup label="Plan de estudios 1">
-                                        <option value="1">COM-F</option>
-                                        <option value="2">COM-G</option>
-                                    </optgroup>
-                                    <optgroup label="Plan de estudios 1">
-                                        <option value="3">ECO-E</option>
-                                        <option value="4">ECO-F</option>
-                                    </optgroup>
-                                </select>
-                                <label>Planes de estudios</label>
-                            </div>
+                          <Input s={12} type='select' label="¿Cuántas materias cursarás este semestre?" onChange = {(e) => this.handleInputChange(e)}>
+                            <option key='nada' value="nada">Seleccione un grado académico</option>
+                            <option key={1} value={1}>1</option>
+                            <option key={2} value={2}>2</option>
+                            <option key={3} value={3}>3</option>
+                            <option key={4} value={4}>4</option>
+                            <option key={5} value={5}>5</option>
+                            <option key={6} value={6}>6</option>
+                            <option key={7} value={7}>7</option>
+                            <option key={8} value={8}>8</option>
+                          </Input>
                         </Row>
-                        <MyCalendar/>
+                        {mat}
                     </Col>
                 </Row>
             </div>
@@ -170,4 +136,4 @@ export class Calendar extends Component {
     }
 }
 
-export default Calendar;
+export default Horarios;
