@@ -47,7 +47,7 @@ export class Login extends React.Component {
 
       return (
         <div className="valign-wrapper">
-            <div id="loginpage" className="row">
+            <div id="login-page" className="row">
                 <div className="col s12 z-depth-6 card-panel">
                     <form className="login-form">
                         <div className="row">
