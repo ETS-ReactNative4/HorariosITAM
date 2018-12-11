@@ -6,10 +6,29 @@ var api = require('../utils/api')
 function Grupos(props){
   var grupos = props.inputValue.map((value, i) => ( 
     <Row>
-      <Col s={12} l={12}>
-          {props.inputValue[i].name} <br/>  
-          {props.inputValue[i].id_mat}-0{props.inputValue[i].id_grupo}    
-        </Col>
+      <Col s={12} l={4} offset={"l4"}>
+        <div className="card-panel light-green lighten-5 z-depth-2">
+          <div className="row valign-wrapper">
+            <div className="col s12" style={{wordWrap: "normal"}}>
+              <span className="brown-text text-darken-4 head-card">{props.inputValue[i].name}</span>
+              <ul>
+                <li className="brown-text text-darken-4">               
+                  <span className="slim-text">Profesor:</span> <b>{props.inputValue[i].profesor}</b>          
+                </li>
+                <li className="brown-text text-darken-4 slim-text">               
+                  Grupo: {props.inputValue[i].id_grupo>9 ? props.inputValue[i].id_mat+"-0"+props.inputValue[i].id_grupo : props.inputValue[i].id_mat+"-00"+props.inputValue[i].id_grupo}          
+                </li>             
+                <li className="brown-text text-darken-4 slim-text">               
+                  Días: {props.inputValue[i].dias}          
+                </li>
+                <li className="brown-text text-darken-4 slim-text">               
+                  Horario: {props.inputValue[i].horario}          
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>        
+      </Col>
     </Row>   
   ));
 
@@ -29,7 +48,7 @@ function Materia(props){
   ));
 
   return (
-    <ul className="collapsible" data-collapsible="accordion">
+    <ul className="collapsible light-green lighten-4" data-collapsible="accordion">
       {materia}
     </ul>
   );
@@ -105,7 +124,8 @@ export class Horarios extends Component {
               v++;
             }
           }
-          mat = <Materia inputValue={this.state.cursables} grupos={obj} open={(i) => {this.open(i)}}/>;          
+          mat = [<h5>Te recomendamos cursar:</h5>,
+            <Materia inputValue={this.state.cursables} grupos={obj} open={(i) => {this.open(i)}}/>];          
         }          
           
 
@@ -115,6 +135,7 @@ export class Horarios extends Component {
               <div className="col s12 z-depth-6 card-panel">
                 <Row>
                     <Col s={12}>
+                        <Row></Row>
                         <Row></Row>
                         <Row>
                           <Col s={12} l={4} offset={'l4'}>

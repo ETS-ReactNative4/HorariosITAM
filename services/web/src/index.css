@@ -36,6 +36,15 @@ nav .brand-logo, nav ul li a{
   padding-top: 8vh;
 }
 
+span.head-card{
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.slim-text{
+  font-weight: 300;
+}
+
 #page {
   width: 85vw;
   padding-top: 8vh;
